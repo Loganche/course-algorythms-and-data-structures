@@ -1,8 +1,8 @@
 #include "edx-io.hpp"
 
 int main() {
-    int a, b;
+    long long a, b;
     io >> a >> b;
-    io << a + b << '\n';
+    io << a + b * b << '\n';
     return 0;
 }
