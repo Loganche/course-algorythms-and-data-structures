@@ -1,8 +1,12 @@
-#include "edx-io.hpp"
+#include "../edx-io.hpp"
+#include <iostream>
 
-int main() {
+using namespace std;
+
+int main()
+{
     long long a, b;
-    io >> a >> b;
-    io << a + b * b << '\n';
+    cin >> a >> b;
+    cout << a + b * b << '\n';
     return 0;
 }
