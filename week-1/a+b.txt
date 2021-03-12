@@ -1,4 +1,4 @@
-#include "../edx-io.hpp"
+#include "edx-io.hpp"
 #include <iostream>
 
 using namespace std;
@@ -6,7 +6,7 @@ using namespace std;
 int main()
 {
     long long a, b;
-    cin >> a >> b;
-    cout << a + b << '\n';
+    io >> a >> b;
+    io << a + b << '\n';
     return 0;
 }
