@@ -1,69 +1,35 @@
 #include "../edx-io.hpp"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-void printArray(int *array, int n)
+int partition(int *&mas, int left, int right)
 {
-    for (int i = 0; i < n; ++i)
-        cout << array[i] << " ";
-    cout << endl;
-}
-
-void printKnums(int *array, int k1, int k2)
-{
-    for (int i = k1; i <= k2; ++i)
-        cout << array[i] << " ";
-    cout << endl;
-}
-
-void quickSort(int *array, int low, int high)
-{
-    int i = low;
-    int j = high;
-    int pivot = array[(i + j) / 2];
-    int temp;
-
-    while (i <= j)
+    if (left != right)
+        swap(mas[left + rand() % (right - left)], mas[right]);
+    int x = mas[right];
+    int i = left - 1;
+    for (int j = left; j <= right; j++)
     {
-        while (array[i] < pivot)
-            i++;
-        while (array[j] > pivot)
-            j--;
-        if (i <= j)
-        {
-            temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-            i++;
-            j--;
-        }
+        if (mas[j] <= x)
+            swap(mas[++i], mas[j]);
     }
-    if (j > low)
-        quickSort(array, low, j);
-    if (i < high)
-        quickSort(array, i, high);
+    return i;
 }
 
-int findOrderStatistic(int *array, int k, int n)
+int nth(int *mas, int k, int size)
 {
-    int left = 0, right = n;
-    int mid = array[(left + right) / 2];
-    while (true)
+    int left = 0, right = size - 1;
+    for (;;)
     {
-
-        if (mid == k)
-        {
-            return mid;
-        }
-        else if (k < mid)
-        {
-            right = mid;
-        }
+        int pos = partition(mas, left, right);
+        if (pos < k)
+            left = pos + 1;
+        else if (pos > k)
+            right = pos - 1;
         else
-        {
-            left = mid + 1;
-        }
+            return mas[k];
     }
 }
 
@@ -84,11 +50,32 @@ int main(int argc, char const *argv[])
         arr[i] = A * arr[i - 2] + B * arr[i - 1] + C;
     }
 
-    int knum = findOrderStatistic(arr, arr[k1], n);
-
-    printArray(arr, n);
-
-    printKnums(arr, knum, k2);
-
+    for (int i = nth(arr, arr[k1], n); i < k2; i++)
+        cout << arr[i] << " ";
     return 0;
 }
+
+/*
+int partition(vector<int> &mas, int l, int r) {
+  if (l!=r)
+    swap(mas[l + rand() % (r - l)], mas[r]);
+  int x = mas[r];
+  int i = l-1;
+  for (int j = l; j <= r; j++) {
+    if (mas[j] <= x)
+      swap(mas[++i],mas[j]);
+  }
+  return i;
+}
+int nth(vector<int> mas, int n) {
+  int l = 0, r = mas.size() - 1;
+  for(;;) {
+    int pos = partition(mas,l,r);
+    if (pos < n)
+      l = pos + 1;
+    else if (pos > n)
+      r = pos - 1;
+    else return mas[n];
+  }
+}
+*/
