@@ -1,0 +1,107 @@
+#include "edx-io.hpp"
+#include <iostream>
+using namespace std;
+
+// Merges two subarrays of arr[].
+// First subarray is arr[left..middle]
+// Second subarray is arr[middle+1..right]
+void merge(int *arr, int left, int middle, int right, long long &ref)
+{
+    int n1 = middle - left + 1;
+    int n2 = right - middle;
+
+    // Create temp arrays
+    int *Left = new int[n1], *Right = new int[n2];
+
+    // Copy data to temp arrays Left[] and Right[]
+    for (int i = 0; i < n1; i++)
+        Left[i] = arr[left + i];
+    for (int j = 0; j < n2; j++)
+        Right[j] = arr[middle + 1 + j];
+
+    // Merge the temp arrays back into arr[left..right]
+
+    // Initial index of first subarray
+    int i = 0;
+
+    // Initial index of second subarray
+    int j = 0;
+
+    // Initial index of merged subarray
+    int k = left;
+
+    while (i < n1 && j < n2)
+    {
+        if (Left[i] <= Right[j])
+        {
+            arr[k] = Left[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = Right[j];
+            j++;
+            ref += n1 - i;
+        }
+        k++;
+    }
+
+    // Copy the remaining elements of
+    // Left[], if there are any
+    while (i < n1)
+    {
+        arr[k] = Left[i];
+        i++;
+        k++;
+    }
+
+    // Copy the remaining elements of
+    // Right[], if there are any
+    while (j < n2)
+    {
+        arr[k] = Right[j];
+        j++;
+        k++;
+    }
+}
+
+// left is for left index and right is
+// right index of the sub-array
+// of arr to be sorted */
+void mergeSort(int *arr, int left, int right, long long &ref)
+{
+    if (left >= right)
+    {
+        return; //returns recursively
+    }
+    int middle = left + (right - left) / 2;
+    mergeSort(arr, left, middle, ref);
+    mergeSort(arr, middle + 1, right, ref);
+    merge(arr, left, middle, right, ref);
+}
+
+// UTILITY FUNCTIONS
+// Function to recieve an array
+void recieveArray(int *A, int size)
+{
+    for (int i = 0; i < size; i++)
+        io >> A[i];
+}
+
+// Driver code
+int main()
+{
+    long long inversions = 0;
+    long long &ref = inversions;
+
+    int arr_size = 0;
+    io >> arr_size;
+
+    int *arr = new int[arr_size];
+    recieveArray(arr, arr_size);
+
+    mergeSort(arr, 0, arr_size - 1, ref);
+
+    io << inversions;
+    return 0;
+}
